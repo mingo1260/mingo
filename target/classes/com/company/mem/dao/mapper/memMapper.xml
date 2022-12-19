@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member"> 
+
+<!-- [1] dao에서 넘겨준 sql문 타입 선언 : 태그 형태 -->
+<!-- [2] namespace는 이미 mapper에서 자동으로 설정, id값 작성 -->
+<!-- [3] dao에서 넘겨준 데이터가 있을 경우 parametType으로 받는다 -->
+	<!-- Object일 경우 mybatis-config.xml에서 alias로 선언한 member 사용 -->
+	<!-- 넘어온 정보가 String일 경우 String, int일 경우 int 사용 -->
+<!-- * sql문 입력 시 db에서 데이터를 인식할 수 있도록 필드값을 #{} 안에 넣어줘야함 -->
+
+<insert id="mbJoin" parameterType="member">
+ INSERT INTO SUBMEM VALUES(#{mbId}, #{mbPw}, #{mbName}, #{mbBirth}, #{mbGender}, #{mbEmail}, #{mbPhone})
+</insert>
+
+<select id="mList" resultType="member">
+ SELECT * FROM SUBMEM
+</select>
+
+<!-- if String mbId > parameterType="String" -->
+<select id="mView" resultType="member">
+ SELECT * FROM SUBMEM WHERE MBID = #{mbId}
+</select>
+
+<update id="mModify" parameterType="member">
+ UPDATE SUBMEM SET MBPW = #{mbPw}, MBNAME = #{mbName}, MBBIRTH = #{mbBirth},
+  MBGENDER = #{mbGender}, MBEMAIL = #{mbEmail}, MBPHONE = #{mbPhone}
+ WHERE MBID = #{mbId}
+</update>
+
+<delete id="mDelete" parameterType="String">
+ DELETE FROM SUBMEM WHERE MBID = #{mbId}
+</delete>
+<!-- 실행 성공 : 1행(이)가 삭제되었습니다.  -->
+
+<select id="mLogin" parameterType="member" resultType="String">
+ SELECT MBID FROM SUBMEM WHERE MBID = #{mbId} AND MBPW = #{mbPw}
+</select>
+
+
+<!-- select태그 >> 반드시 resultType 작성해야함 -->
+<!-- 세미콜롬 ; 쓰면 안됨. -->
+
+</mapper>
